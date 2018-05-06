@@ -22,23 +22,48 @@ def parser(request):
 
 	for b in data1:
 		
-		p1n=b['name']
+		port_name=b['name']
 		if 'description' in b:
-			d1e=b['description']
+			desc=b['description']
 		else:
-			d1e=''
+			desc=''
 
 		if 'variants' in b:
-			v1a=b['variants']
+			variant=b['variants']
 		else:
-			v1a=''
+			variant=''
 
 		if 'portdir' in b:
-			p1d=b['portdir']
+			port_dir=b['portdir']
 		else:
-			p1d=''
+			port_dir=''
+
+		if 'platforms' in b:
+			platform=b['platforms']
+		else:
+			platform=''
+		
+		if 'version' in b:
+			version=b['version']
+		else:
+			version=''
+		
+		if 'homepage' in b:
+			homepage=b['homepage']
+		else:
+			homepage=''
+		
+		if 'license' in b:
+			license=b['license']
+		else:
+			license=''
 			
-		c = Port.objects.create(portid=id, portname=p1n, description=d1e, variant=v1a, portdir=p1d)
+		if 'long_description' in b:
+			long_description=b['long_description']
+		else:
+			long_description=''
+		
+		c = Port.objects.create(portid=id, portname=port_name, description=desc, variant=variant, portdir=port_dir,homepage=homepage,platform=platform,cur_version=version,license=license,long_desc=long_description)
 		count +=1
 		id +=1
 		#print("completed the INSERT")
@@ -46,15 +71,15 @@ def parser(request):
 
 	'''
 	b = jsonparser(k)
-	p1n = b['name']
-	d1e = b['description']
-	v1a = b['variants']
-	p1d = b['portdir']
-	c = Port.objects.create(portname=p1n, description=d1e, variant=v1a, portdir=p1d)
+	port_name = b['name']
+	desc = b['description']
+	variant = b['variants']
+	port_dir = b['portdir']
+	c = Port.objects.create(portname=port_name, description=desc, variant=variant, portdir=port_dir)
 	'''
 	#from django.db import connection
 	#to print the query in console
-	#data= Port.objects.filter(portname=p1n)
+	#data= Port.objects.filter(portname=port_name)
 	#print connection.queries[-1]
 	
 	#return render(request,'port/data.html',{"port1":data.last()})
@@ -66,7 +91,7 @@ def parser(request):
 def find(request):
 	if request.method == 'POST':
 			port_name = request.POST.get('textfield', None)
-			data=Port.objects.filter(portname__startswith=port_name)
+			data=Port.objects.filter(portname__icontains=port_name)
 			
 			return render(request, 'port/portmain.html',{"object_list":data,"flag":1})
 	else:
