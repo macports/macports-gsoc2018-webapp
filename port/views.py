@@ -18,7 +18,7 @@ def parser(request):
 		id=Port.objects.latest("portid").portid
 		id = id + 1
 	except Port.DoesNotExist:
-		id=0
+		id=1
 
 	for b in data1:
 		

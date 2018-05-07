@@ -1,491 +1,203 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-	<title>{{ port.portname }}</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<style type="text/css">
-		
+    <title>{{ port.portname }}</title>
+    <meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/dropdown.css">
+    <link rel="stylesheet" type="text/css" href="css/port_details.css">
 
-		.dropbtn {
-		    background-color: #3498DB;
-		    color: white;
-		    padding: 16px;
-		    font-size: 16px;
-		    border: none;
-		    cursor: pointer;
-		}
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+        body {
+            background-color: #3e94ec;
+            font-family: "Roboto", helvetica, arial, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            text-rendering: optimizeLegibility;
+        }
 
-		.dropbtn:hover, .dropbtn:focus {
-		    background-color: #2980B9;
-		}
+        h3 {
+            color: #fafafa;
 
-		.dropdown {
-		    position: relative;
-		    display: inline-block;
-		}
-
-		.dropdown-content {
-		    display: none;
-		    position: absolute;
-		    background-color: #f1f1f1;
-		    min-width: 160px;
-		    overflow: auto;
-		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		    z-index: 1;
-		}
-
-		.dropdown-content a {
-		    color: black;
-		    padding: 12px 16px;
-		    text-decoration: none;
-		    display: block;
-		}
-
-		.dropdown a:hover {background-color: #ddd}
-
-		.show {display:block;}
-	</style>
-	<style type="text/css">
-		div.table-title {
-		   display: block;
-		  margin: auto;
-		  max-width: 600px;
-		  padding:5px;
-		  width: 100%;
-		}
-
-		.table-title h3 {
-		   color: #fafafa;
-		   font-size: 30px;
-		   font-weight: 400;
-		   font-style:normal;
-		   font-family: "Roboto", helvetica, arial, sans-serif;
-		   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-		   text-transform:uppercase;
-		}
+            font-style: normal;
+            font-family: "Roboto", helvetica, arial, sans-serif;
+            text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+        }
+    </style>
 
 
-		/*** Table Styles **/
-
-		.table-fill {
-		  background: white;
-		  border-radius:3px;
-		  border-collapse: collapse;
-		  height: 320px;
-		  margin: auto;
-		  max-width: 600px;
-		  padding:5px;
-		  width: 100%;
-		  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-		  animation: float 5s infinite;
-		}
-		 
-		th {
-		  color:#D5DDE5;;
-		  background:#1b1e24;
-		  border-bottom:4px solid #9ea7af;
-		  border-right: 1px solid #343a45;
-		  font-size:23px;
-		  font-weight: 100;
-		  padding:24px;
-		  text-align:left;
-		  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-		  vertical-align:middle;
-		}
-
-		th:first-child {
-		  border-top-left-radius:3px;
-		}
-		 
-		th:last-child {
-		  border-top-right-radius:3px;
-		  border-right:none;
-		}
-		  
-		tr {
-		  border-top: 1px solid #C1C3D1;
-		  border-bottom-: 1px solid #C1C3D1;
-		  color:#666B85;
-		  font-size:16px;
-		  font-weight:normal;
-		  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
-		}
-		 
-		tr:hover td {
-		  background:#4E5066;
-		  color:#FFFFFF;
-		  border-top: 1px solid #22262e;
-		}
-		 
-		tr:first-child {
-		  border-top:none;
-		}
-
-		tr:last-child {
-		  border-bottom:none;
-		}
-		 
-		tr:nth-child(odd) td {
-		  background:#EBEBEB;
-		}
-		 
-		tr:nth-child(odd):hover td {
-		  background:#4E5066;
-		}
-
-		tr:last-child td:first-child {
-		  border-bottom-left-radius:3px;
-		}
-		 
-		tr:last-child td:last-child {
-		  border-bottom-right-radius:3px;
-		}
-		 
-		td {
-		  background:#FFFFFF;
-		  padding:20px;
-		  text-align:left;
-		  vertical-align:middle;
-		  font-weight:300;
-		  font-size:18px;
-		  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-		  border-right: 1px solid #C1C3D1;
-		}
-
-		td:last-child {
-		  border-right: 0px;
-		}
-
-		th.text-left {
-		  text-align: left;
-		}
-
-		th.text-center {
-		  text-align: center;
-		}
-
-		th.text-right {
-		  text-align: right;
-		}
-
-		td.text-left {
-		  text-align: left;
-		}
-
-		td.text-center {
-		  text-align: center;
-		}
-
-		td.text-right {
-		  text-align: right;
-		}
-	</style>
-	    <style type="text/css">
-         @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
-         body {
-         background-color: #3e94ec;
-         font-family: "Roboto", helvetica, arial, sans-serif;
-         font-size: 16px;
-         font-weight: 400;
-         text-rendering: optimizeLegibility;
-         }
-         h3 {
-         color: #fafafa;
-         
-         font-style:normal;
-         font-family: "Roboto", helvetica, arial, sans-serif;
-         text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-         text-transform:uppercase;
-         }
-         /*** Table Styles **/
-         .table-fill {
-         background: white;
-         border-radius:3px;
-         border-collapse: collapse;
-         height: 320px;
-         margin: auto;
-         max-width: 600px;
-         padding:5px;
-         width: 100%;
-         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-         animation: float 5s infinite;
-         }
-         th {
-         color:#D5DDE5;;
-         background:#1b1e24;
-         border-bottom:4px solid #9ea7af;
-         border-right: 1px solid #343a45;
-         font-size:23px;
-         font-weight: 100;
-         padding:11px;
-         text-align:left;
-         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-         vertical-align:middle;
-         }
-         th:first-child {
-         border-top-left-radius:3px;
-         }
-         th:last-child {
-         border-top-right-radius:3px;
-         border-right:none;
-         }
-         tr {
-         border-top: 1px solid #C1C3D1;
-         border-bottom-: 1px solid #C1C3D1;
-         color:#666B85;
-         font-size:16px;
-         font-weight:normal;
-         text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
-         }
-         tr:hover td {
-         background:#4E5066;
-         color:#FFFFFF;
-         border-top: 1px solid #22262e;
-         }
-         tr:first-child {
-         border-top:none;
-         }
-         tr:last-child {
-         border-bottom:none;
-         }
-         tr:nth-child(odd) td {
-         background:#EBEBEB;
-         }
-         tr:nth-child(odd):hover td {
-         background:#4E5066;
-         }
-         tr:last-child td:first-child {
-         border-bottom-left-radius:3px;
-         }
-         tr:last-child td:last-child {
-         border-bottom-right-radius:3px;
-         }
-         td {
-         background:#FFFFFF;
-         padding:5px;
-         text-align:left;
-         vertical-align:middle;
-         font-weight:300;
-         font-size:18px;
-         text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-         border-right: 1px solid #C1C3D1;
-         }
-         td:last-child {
-         border-right: 0px;
-         }
-         th.text-left {
-         text-align: left;
-         }
-         th.text-center {
-         text-align: center;
-         }
-         th.text-right {
-         text-align: right;
-         }
-         td.text-left {
-         text-align: left;
-         }
-         td.text-center {
-         text-align: center;
-         }
-         td.text-right {
-         text-align: right;
-         }
-      </style>
-  
-	<script type="text/javascript">
-	  window.onload = function () {
-	    var chart = new CanvasJS.Chart("chartContainer",
-	    {
-
-	      title:{
-	      text: "Installations"
-	      },
-	      axisX: {
-	        title:"Months",
-	        valueFormatString: "MMM",
-	        interval:1,
-	        intervalType: "month"
-	      },
-	      axisY:{ title:"Number of Installations",
-	        includeZero: false
-
-	      },
-	      data: [
-	      {
-	        type: "line",
-
-	        dataPoints: [
-	        { x: new Date(2012, 00, 1), y: 450 },
-	        { x: new Date(2012, 01, 1), y: 414},
-	          { x: new Date(2012, 02, 1), y: 520},
-	        { x: new Date(2012, 03, 1), y: 460 },
-	        { x: new Date(2012, 04, 1), y: 450 },
-	        { x: new Date(2012, 05, 1), y: 500 },
-	        { x: new Date(2012, 06, 1), y: 480 },
-	        { x: new Date(2012, 07, 1), y: 480 },
-	        { x: new Date(2012, 08, 1), y: 410 },
-	        { x: new Date(2012, 09, 1), y: 500 },
-	        { x: new Date(2012, 10, 1), y: 480 },
-	        { x: new Date(2012, 11, 1), y: 510 }
-	        ]
-	      }
-	      ]
-	    });
-
-	    chart.render();
-	  }
-  </script>
- <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript" src= "js/char.js"></script>
+    <!-- <script type="text/javascript" src="https://raw.githubusercontent.com/Vishnum98/temp/master/char.js"></script> -->
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 
-<body >
-	<div>
-		{% block content %}
-		<div class="table-title1"><h3>{{ port.portname }}</h3></div>
-		
-		<table border="1" width="500" table-layout="fixed" cellpadding="1" cellspacing="1" >
-			<tbody>
-				<tr>
-					<td>Port Id</td>
-					<td>{{ port.portid }}</td>
-				</tr>
-				<tr>
-					<td>Description</td>
-					<td>{{ port.description }}</td>
-				</tr>
-				<tr>
-					<td>Version</td>
-					<td>{{ port.variant }}</td>
-				</tr>
-				<tr>
-					<td>Directory</td>
-					<td>{{ port.portdir }}</td>
-				</tr>	
-			</tbody>
-		</table>
-		{% endblock %}
-	</div>
+<body>
+    <div>
+        {% block content %}
+        <div class="table-title1">
+            <h3>{{ port.portname }}</h3>
+        </div>
+
+        <table border="1" width="500" table-layout="fixed" cellpadding="1" cellspacing="1">
+            <tbody>
+                <tr>
+                    <td>Port Id</td>
+                    <td>{{ port.portid }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ port.description }}</td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td>{{ port.variant }}</td>
+                </tr>
+                <tr>
+                    <td>Directory</td>
+                    <td>{{ port.portdir }}</td>
+                </tr>
+                <tr>
+                    <td>Platform</td>
+                    <td>{{ port.platform }}</td>
+                </tr>
+                <tr>
+                    <td>Current Version</td>
+                    <td>{{ port.cur_version }}</td>
+                </tr>
+                <tr>
+                    <td>Homepage</td>
+                    <td>{{ port.homepage }}</td>
+                </tr>
+                <tr>
+                    <td>Livense</td>
+                    <td>{{ port.license }}</td>
+                </tr>
+                <tr>
+                    <td>Long Description</td>
+                    <td>{{ port.long_desc }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endblock %}
+    </div>
 
 
+    <br>
+    <div class="table-title1">
+        <h3>Build History</h3>
+    </div>
 
-
-
-<br>
-<div class="table-title1"><h3>Build History</h3></div>
-
-<table class="table-fill" id="tbl">
-	<thead>
+    <table class="table-fill" id="tbl">
+        <thead>
             <tr>
-               <th class="text-left">OS Version + Architecture</th>
-               <th class="text-left">Build Number</th>
-               <th class="text-left">Time Stamp</th>
-               <th class="text-left">Success</th>
-               <th class="text-left">Reason</th>
-               <th class="text-left">Info</th>
-               <th class="text-left">Commit id</th>
-               <th class="text-left">Distributable</th>
+                <th class="text-left">OS Version + Architecture</th>
+                <th class="text-left">Build Number</th>
+                <th class="text-left">Time Stamp</th>
+                <th class="text-left">Success</th>
+                <th class="text-left">Reason</th>
+                <th class="text-left">Info</th>
+                <th class="text-left">Commit id</th>
+                <th class="text-left">Distributable</th>
             </tr>
-    </thead>
-	<tbody>
-		
-		<tr>
-			<td>ports-10.7_x86_64_legacy-builder</td>
-			<td>62252</td>
-			<td>
-			<p>Apr 02 15:13</p>
-			</td>
-			<td>
-			<p>Yes</p>
-			</td>
-			<td>
-			<p>The Triggerable scheduler named &#39;ports-10.7_x86_64_legacy-trigger&#39; triggered this build</p>
-			</td>
-			<td>
-			<p>Build successful</p>
-			</td>
-			<td>
-			<p>6c89af4818e02ad08702d47eb247076bfb6dd065</p>
-			</td>
-			<td>
-			<p>&nbsp;</p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-			<p>ports-10.6_i386_legacy-builder</p>
-			</td>
-			<td>
-			<p>39607</p>
-			</td>
-			<td>
-			<p>&nbsp;Apr 2 11:50:53&nbsp;</p>
-			</td>
-			<td>
-			<p>No</p>
-			</td>
-			<td>
-			<p>The Triggerable scheduler named &#39;ports-10.6_i386_legacy-trigger&#39; triggered this buil</p>
-			</td>
-			<td>
-			<p>Failed install-dependencie</p>
-			</td>
-			<td>
-			<p>5328f43f489944d41c86526450e75e3a120d9a7e</p>
-			</td>
-			<td>
-			<p>&nbsp;</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
+        </thead>
+        <tbody>
 
-<p>Installation Statistics:<br />
-<br />
-Various Statistics</p>
+            <tr>
+                <td>ports-10.7_x86_64_legacy-builder</td>
+                <td>62252</td>
+                <td>
+                    <p>Apr 02 15:13</p>
+                </td>
+                <td>
+                    <p>Yes</p>
+                </td>
+                <td>
+                    <p>The Triggerable scheduler named &#39;ports-10.7_x86_64_legacy-trigger&#39; triggered this build</p>
+                </td>
+                <td>
+                    <p>Build successful</p>
+                </td>
+                <td>
+                    <p>6c89af4818e02ad08702d47eb247076bfb6dd065</p>
+                </td>
+                <td>
+                    <p>&nbsp;</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>ports-10.6_i386_legacy-builder</p>
+                </td>
+                <td>
+                    <p>39607</p>
+                </td>
+                <td>
+                    <p>&nbsp;Apr 2 11:50:53&nbsp;</p>
+                </td>
+                <td>
+                    <p>No</p>
+                </td>
+                <td>
+                    <p>The Triggerable scheduler named &#39;ports-10.6_i386_legacy-trigger&#39; triggered this buil</p>
+                </td>
+                <td>
+                    <p>Failed install-dependencie</p>
+                </td>
+                <td>
+                    <p>5328f43f489944d41c86526450e75e3a120d9a7e</p>
+                </td>
+                <td>
+                    <p>&nbsp;</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-
-<div class="dropdown">
-<button onclick="myFunction()" class="dropbtn">Versions</button>
-  <div id="myDropdown" class="dropdown-content">
-    <a href="#1.1">Version 1.1</a>
-    <a href="#2.1">Version 2.1</a>
-    <a href="#2.7.12">Version 2.7.12</a>
-  </div>
-</div>
-
-<script>
-	/* When the user clicks on the button, 
-	toggle between hiding and showing the dropdown content */
-	function myFunction() {
-	    document.getElementById("myDropdown").classList.toggle("show");
-	}
-
-	// Close the dropdown if the user clicks outside of it
-	window.onclick = function(event) {
-	  if (!event.target.matches('.dropbtn')) {
-
-	    var dropdowns = document.getElementsByClassName("dropdown-content");
-	    var i;
-	    for (i = 0; i < dropdowns.length; i++) {
-	      var openDropdown = dropdowns[i];
-	      if (openDropdown.classList.contains('show')) {
-	        openDropdown.classList.remove('show');
-	      }
-	    }
-	  }
-	}
-</script>
+    <p>Installation Statistics:<br />
+        <br /> Various Statistics</p>
 
 
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Versions</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#1.1">Version 1.1</a>
+            <a href="#2.1">Version 2.1</a>
+            <a href="#2.7.12">Version 2.7.12</a>
+        </div>
+    </div>
 
-<div id="chartContainer" style="height: 300px; width: 500;">
-  </div>
+    <script>
+        /* When the user clicks on the button, 
+        	toggle between hiding and showing the dropdown content */
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+
+
+    <div id="chartContainer" style="height: 300px; width: 500;">
+    </div>
 </body>
 
 </html>
-
-
