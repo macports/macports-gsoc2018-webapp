@@ -11,7 +11,7 @@ def name1(request,port_name):
 
 
 def parser(request):
-	data1=json.loads(open('port/testing2.json').read())
+	data1=json.loads(open('port/testing.json').read())
 	count=0
 
 	try:
