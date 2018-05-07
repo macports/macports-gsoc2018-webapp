@@ -18,6 +18,7 @@
             font-size: 16px;
             font-weight: 400;
             text-rendering: optimizeLegibility;
+            padding-left:10px;
         }
 
         h3 {
@@ -26,9 +27,14 @@
             font-style: normal;
             font-family: "Roboto", helvetica, arial, sans-serif;
             text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-            text-transform: uppercase;
+            /*text-transform: uppercase;*/
         }
 
+        /*hyper link color*/
+        a:link
+            {
+            color:rgb(0,250,0)
+            }
 
         /*Dropdown*/
         .dropbtn {
@@ -219,6 +225,7 @@
         <div class="table-title1">
             <h3>{{ port.portname }}</h3>
         </div>
+        <div style="position:absolute; top:0; right:0;">Go to <a style="color: red" href="/port/">Home</a></div>
 
         <table border="1" width="500" table-layout="fixed" cellpadding="1" cellspacing="1">
             <tbody>

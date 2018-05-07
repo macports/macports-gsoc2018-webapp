@@ -11,9 +11,10 @@ def name1(request,port_name):
 
 
 def parser(request):
-	data1=json.loads(open('port/testing.json').read())
+	data1=json.loads(open('port/testing2.json').read())
 	count=0
-
+	objs=[]
+	names=[]
 	try:
 		id=Port.objects.latest("portid").portid
 		id = id + 1
@@ -63,12 +64,22 @@ def parser(request):
 		else:
 			long_description=''
 		
-		c = Port.objects.create(portid=id, portname=port_name, description=desc, variant=variant, portdir=port_dir,homepage=homepage,platform=platform,cur_version=version,license=license,long_desc=long_description)
-		count +=1
+		# c = Port.objects.create(portid=id, portname=port_name, description=desc, variant=variant, portdir=port_dir,homepage=homepage,platform=platform,cur_version=version,license=license,long_desc=long_description)
+		
+		# This is for chekcing repetition..works but slow
+		# if not port_name in names:
+		# 	objs.append(Port(portid=id, portname=port_name, description=desc, variant=variant, portdir=port_dir,homepage=homepage,platform=platform,cur_version=version,license=license,long_desc=long_description))
+		# 	id +=1
+		# names.append(port_name)
+		
+		objs.append(Port(portid=id, portname=port_name, description=desc, variant=variant, portdir=port_dir,homepage=homepage,platform=platform,cur_version=version,license=license,long_desc=long_description))
 		id +=1
+		count +=1
+		
+
 		#print("completed the INSERT")
 		#print(c.fetchall())
-
+	Port.objects.bulk_create(objs)
 	'''
 	b = jsonparser(k)
 	port_name = b['name']

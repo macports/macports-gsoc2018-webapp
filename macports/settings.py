@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'port'
 ]
 
@@ -47,9 +48,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'macports.urls'
@@ -131,6 +134,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+INTERNAL_IPS = '127.0.0.1'
 
+def show_toolbar(request):
+    return request.user.is_staff
+
+DEBUG_TOOLBAR_CONFIG = {
+    # ...
+    'SHOW_TOOLBAR_CALLBACK': 'project.settings.show_toolbar',
+}
 
 django_heroku.settings(locals())
