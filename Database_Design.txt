@@ -1,0 +1,127 @@
+Database Description
+
+- Port Table
+- Builder Table
+- Maintainers
+- Maintainer-portkey
+- Build History (The most important table)
+- Tables for Statistics
+
+Please go through : https://docs.google.com/spreadsheets/d/1Kgbpl1aHn-10fjXh-f4Wz24-TQw4Coaucidpxp7ZqOQ/edit?usp=sharing
+
+For better visualisations. Then do comment/ suggest changes in this file .
+
+
+Table Structures --
+
+Port Table:
+
+table name : port
+table desc : This table consists of all the current port information.
+.
+├── portid     				# Integer Field || Primary key
+├── portname 				# Text Field	|| Default = ''	 || Unique Value
+├── description 			# Text Field	|| Default = '' 
+├── long_desc 				# Text Field	|| Default = '' 
+├── homepage 				# Text Field	|| Default = '' 
+├── platform 				# Text Field	|| Default = '' 
+├── portversionid 			# Text Field	|| Default = '' 
+├── license 				# Text Field	|| Default = '' 
+└── portdir 				# Text Field	|| Default = '' 
+
+
+
+Builder Table:
+
+table name : builders
+table desc : This table consist of all the builders information available.
+.
+├── builderid     			# Integer Field || Primary key
+├── builder 				# Text Field	|| Default = ''	 
+├── osname 					# Text Field	|| Default = '' 
+└── architecture 			# Text Field	|| Default = '' 
+
+Port Version:
+
+table name : port_version
+table desc : This table maps the ports with there different version .
+.
+├── portversionid     		# Integer Field || Primary key
+├── portid 					# Integer Field || Default = ''	 
+├── version 				# Text Field	|| Default = '' 
+└── variants	 			# Text Field	|| Default = '' 
+
+Maintainers:
+
+table name : maintainers
+table desc : Unique maintainerid would be given.
+			 Maintainers and there id would be present here.
+.
+├── maintainerid     		# Integer Field || Primary key
+└── maintainers 			# Text Field	|| Default = ''  
+
+Maintainer - Portid
+
+table name : maintainer-portid
+table desc : Sets up the relation between maintainerid & portid  portversionid.
+			 Basically tells us which maintainer is handling which all ports.
+
+.
+├── maintainerid     		# Integer Field || NOT UNIQUE
+├── portid 					# Integer Field || NOT UNIQUE	 
+└── portversionid 			# Integer Field || NOT UNIQUE
+
+
+Build History:
+
+table name : build_history
+table desc : Enitre build history would be saved here.
+
+.
+├── srno		     		# Integer Field || Primary key
+├── builderid 				# Integer Field || NOT UNIQUE	
+├── buildnumber     		# Integer Field || UNIQUE
+├── portid 					# Integer Field || NOT UNIQUE	
+├── portversionid     		# Integer Field || NOT UNIQUE
+├── timestamp 				# timestamp 	|| NOT UNIQUE	
+├── success     			# Text Field	|| NOT UNIQUE
+├── version 				# Text Field 	|| NOT UNIQUE	
+├── reason     				# Text Field 	|| NOT UNIQUE
+├── info 					# Text Field 	|| NOT UNIQUE	
+├── commitid     			# Text Field 	|| 
+└── distributable 			# Text Field 	|| NOT UNIQUE	
+
+
+Table For Statistics -
+
+
+Desc :  All the results from 'mpstats' would be parsed and 
+		these 2 tables would be populated
+
+Port history:
+
+table name : port_history
+
+.
+├── portid     				# Integer Field || 
+├── portversionid 			# Integer Field ||  
+├── userid 					# Integer Field	|| 
+├── timestamp 				# timestamp		|| 
+├── variants 				# Text Field	|| 
+└── requested	 			# Integer Field	|| 
+
+
+OS history
+
+table name : os_history
+
+.
+├── userid     				# Integer Field || 
+├── os_id 					# Text Field 	||  
+├── architecture 			# Text Field	|| 
+├── platform				# Text Field	|| 
+├── xcodeversion			# Text Field	|| 
+├── macportsversion			# Text Field	|| 
+├── timestamp				# timestamp		|| 
+├── defaultprefix			# Integer Field	|| 
+└── stdlib	 				# Text Field	|| 
