@@ -44,7 +44,12 @@ _This table consist of all the builders information available._
 
 ### Structure
 
-...
+Column | Type
+-------|---------
+**builderid (key)** | integer
+builder | varchar
+osname | text
+architecture | text
 
 ### Example
 
@@ -59,7 +64,12 @@ _This table maps the ports with multiple different version._
 
 ### Structure
 
-...
+Column | Type
+-------|---------
+**portversionid (key)** | integer
+builder | integer
+version | text
+variants | text
 
 ### Example
 
@@ -71,25 +81,40 @@ _This table maps the ports with multiple different version._
 
 ## maintainers
 
-_Which maintainers maintain which ports_
+_Maintainer and ther id_
 
 ### Structure
 
-...
+Column | Type
+-------|---------
+**maintainid (key)** | integer
+maintainers | text
+
 
 ### Example
 
-| maintainid(key) | maintainers | version |
-|:---------------:|:-----------:|:-------:|
-|        1        |    mojca    |  2.7.0  |
-|        2        |    vishnu   |  2.7.1  |
+| maintainid(key) | maintainers | 
+|:---------------:|:-----------:|
+|        1        |    mojca    |
+|        2        |    vishnu   |
 
-## maintainer_portid
+## maintainer_port
 
 * _Sets up the relation between maintainerid & portid  portversionid._
 * _Basically tells us which maintainer is handling which all ports._
 
-| maintainid (not unique) | portid (not unique) | portversionid |
+### Structure
+
+Column | Type
+-------|---------
+**maintainer_id** | integer
+portid | integer
+portversionid | integer
+
+
+### Example
+
+| maintainer_id (not unique) | portid (not unique) | portversionid |
 |:-----------------------:|:-------------------:|:-------------:|
 |            1            |         234         |       3       |
 |            1            |         677         |       2       |
@@ -99,8 +124,27 @@ _Which maintainers maintain which ports_
 
 _Enitre build history would be saved here._
 
-| Sr no | builderid | buildnumber | portid | portversionid | timestamp | success | version |  reason | info |   commit id   | distributable |
-|:-----:|:---------:|:-----------:|:------:|:-------------:|:---------:|:-------:|:-------:|:-------:|:----:|:-------------:|:-------------:|
+### Structure
+
+Column | Type
+-------|---------
+**sr_no (key)** | integer
+builderid | integer
+buildnumber | integer
+portid | integer
+portversionid | integer
+timestamp | time
+success | varchar
+version | varchar
+reason | text
+info | text
+commitid | varchar
+distributable | text
+
+### Example
+
+| sr_no | builderid | buildnumber | portid | portversionid | timestamp | success | version |  reason | info |   commitid   | distributable |
+|:----:|:---------:|:-----------:|:------:|:-------------:|:---------:|:-------:|:-------:|:-------:|:----:|:-------------:|:-------------:|
 |   1   |     1     |     5568    |   677  |       1       |  XX:XX:XX |    ok   |   1.2   |   abc   |  def | abxcss12asfva |               |
 |   2   |     2     |     4554    |   234  |       3       |  XX:XX:XX |    no   |  1.0.4  |   def   |  abc |  asdasda231as |               |
 |   3   |     1     |     5569    |   677  |       2       |  XX:XX:XX |  not ok |  1.0.5  | trigger | fail |     abc345    |               |
@@ -110,6 +154,22 @@ _Enitre build history would be saved here._
 _All the results from 'mpstats' would be parsed and these 2 tables would be populated_
 
 ## port_history
+
+
+
+### Structure
+
+Column | Type
+-------|---------
+portid | integer
+portversionid | integer
+userid  | text
+timestamp | time
+variants | varchar
+requested | varchar
+
+
+### Example
 
 | portid | portversionid |                userid                |     timestamp    | variants | requested |
 |:------:|:-------------:|:------------------------------------:|:----------------:|:--------:|:---------:|
@@ -121,7 +181,25 @@ _All the results from 'mpstats' would be parsed and these 2 tables would be popu
 
 ## os_history
 
-|                userid                | os id | os_arch | platform | xcodeversion | macportsversion |     timestamp    | default prefix |   stdlib  |
+### Structure
+
+Column | Type
+-------|---------
+userid  | text
+os_id | integer
+os_arch | varchar
+platform | text
+xcodeversion | varchar
+macportsversion | varchar
+timestamp | time
+default_prefix | varchar
+stdlib | text
+
+
+
+### Example
+
+|                userid                | os_id | os_arch | platform | xcodeversion | macportsversion |     timestamp    | default_prefix |   stdlib  |
 |:------------------------------------:|:-----:|:-------:|:--------:|:------------:|:---------------:|:----------------:|:--------------:|:---------:|
 | 270856DE-DD7E-494F-9A99-281BED099110 |  10.5 |   i386  |  darwin  |      9.2     |      2.4.2      | 27/03/2018 12:00 |      TRUE      | stdlibc++ |
 | 28130GH-ASD7E-494F-9A99-283HSJVU1293 |  10.8 |   i486  |  darwin  |      9.2     |      2.4.0      | 27/03/2018 12:30 |      FALSE     | stdlibc++ |
