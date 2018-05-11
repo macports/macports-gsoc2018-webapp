@@ -5,11 +5,11 @@
     <title>{{ port.portname }}</title>
     <meta charset="utf-8" />
 	
-
+    {% load static %}
     <!-- Local files -->
     <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="css/dropdown.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="css/port_details.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'port/css/dropdown.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'port/css/port_details.css' %}">
     <!-- <script type="text/javascript" src= "js/char.js"></script> -->
 
 
@@ -17,14 +17,12 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     
     <!-- Dropdown files contains css for dropdown as well as background of page -->
-    <link rel="stylesheet" href="https://vishnu.neocities.org/dropdown.css" >
-    <link rel="stylesheet" href="https://vishnu.neocities.org/port_details.css" >
-    <script type="text/javascript" src= "https://vishnu.neocities.org/char.js"></script>
+    <!-- <link rel="stylesheet" href="https://vishnu.neocities.org/dropdown.css" >
+    <link rel="stylesheet" href="https://vishnu.neocities.org/port_details.css" > -->
+    <!-- <script type="text/javascript" src= "https://vishnu.neocities.org/char.js"></script> -->
+    <script type="text/javascript" src= "{% static 'port/js/char.js' %}"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-
-    <!-- Inline code -->
-    <!--   <style type="text/css">
+    <style type="text/css">
         @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
         body {
             background-color: #3e94ec;
@@ -43,190 +41,7 @@
             text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
             /*text-transform: uppercase;*/
         }
-
-        /*hyper link color*/
-        a:link
-            {
-            color:rgb(0,250,0)
-            }
-
-        /*Dropdown*/
-        .dropbtn {
-		    background-color: #3498DB;
-		    color: white;
-		    padding: 16px;
-		    font-size: 16px;
-		    border: none;
-		    cursor: pointer;
-		}
-		.dropbtn:hover, .dropbtn:focus {
-		    background-color: #2980B9;
-		}
-		.dropdown {
-		    position: relative;
-		    display: inline-block;
-		}
-		.dropdown-content {
-		    display: none;
-		    position: absolute;
-		    background-color: #f1f1f1;
-		    min-width: 160px;
-		    overflow: auto;
-		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		    z-index: 1;
-		}
-		.dropdown-content a {
-		    color: black;
-		    padding: 12px 16px;
-		    text-decoration: none;
-		    display: block;
-		}
-		.dropdown a:hover {background-color: #ddd}
-		.show {display:block;}
-
-		/*table css*/
-
-         /*** Table Styles **/
-         .table-fill {
-         background: white;
-         border-radius:3px;
-         border-collapse: collapse;
-         height: 320px;
-         margin: auto;
-         max-width: 600px;
-         padding:5px;
-         width: 100%;
-         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-         animation: float 5s infinite;
-         }
-         th {
-         color:#D5DDE5;;
-         background:#1b1e24;
-         border-bottom:4px solid #9ea7af;
-         border-right: 1px solid #343a45;
-         font-size:23px;
-         font-weight: 100;
-         padding:11px;
-         text-align:left;
-         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-         vertical-align:middle;
-         }
-         th:first-child {
-         border-top-left-radius:3px;
-         }
-         th:last-child {
-         border-top-right-radius:3px;
-         border-right:none;
-         }
-         tr {
-         border-top: 1px solid #C1C3D1;
-         border-bottom-: 1px solid #C1C3D1;
-         color:#666B85;
-         font-size:16px;
-         font-weight:normal;
-         text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
-         }
-         tr:hover td {
-         background:#4E5066;
-         color:#FFFFFF;
-         border-top: 1px solid #22262e;
-         }
-         tr:first-child {
-         border-top:none;
-         }
-         tr:last-child {
-         border-bottom:none;
-         }
-         tr:nth-child(odd) td {
-         background:#EBEBEB;
-         }
-         tr:nth-child(odd):hover td {
-         background:#4E5066;
-         }
-         tr:last-child td:first-child {
-         border-bottom-left-radius:3px;
-         }
-         tr:last-child td:last-child {
-         border-bottom-right-radius:3px;
-         }
-         td {
-         background:#FFFFFF;
-         padding:5px;
-         text-align:left;
-         vertical-align:middle;
-         font-weight:300;
-         font-size:18px;
-         text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-         border-right: 1px solid #C1C3D1;
-         }
-         td:last-child {
-         border-right: 0px;
-         }
-         th.text-left {
-         text-align: left;
-         }
-         th.text-center {
-         text-align: center;
-         }
-         th.text-right {
-         text-align: right;
-         }
-         td.text-left {
-         text-align: left;
-         }
-         td.text-center {
-         text-align: center;
-         }
-         td.text-right {
-         text-align: right;
-         }
-    </style> -->
-    <!-- <script type="text/javascript">
-    	
-
-
-    	window.onload = function () {
-	    var chart = new CanvasJS.Chart("chartContainer",
-	    {
-
-	      title:{
-	      text: "Installations"
-	      },
-	      axisX: {
-	        title:"Months",
-	        valueFormatString: "MMM",
-	        interval:1,
-	        intervalType: "month"
-	      },
-	      axisY:{ title:"Number of Installations",
-	        includeZero: false
-
-	      },
-	      data: [
-	      {
-	        type: "line",
-
-	        dataPoints: [
-	        { x: new Date(2012, 00, 1), y: 450 },
-	        { x: new Date(2012, 01, 1), y: 414},
-	          { x: new Date(2012, 02, 1), y: 520},
-	        { x: new Date(2012, 03, 1), y: 460 },
-	        { x: new Date(2012, 04, 1), y: 450 },
-	        { x: new Date(2012, 05, 1), y: 500 },
-	        { x: new Date(2012, 06, 1), y: 480 },
-	        { x: new Date(2012, 07, 1), y: 480 },
-	        { x: new Date(2012, 08, 1), y: 410 },
-	        { x: new Date(2012, 09, 1), y: 500 },
-	        { x: new Date(2012, 10, 1), y: 480 },
-	        { x: new Date(2012, 11, 1), y: 510 }
-	        ]
-	      }
-	      ]
-	    });
-
-	    chart.render();
-	  }
-    </script> -->
+    </style>
     
 </head>
 
