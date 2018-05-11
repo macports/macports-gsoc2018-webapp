@@ -90,5 +90,6 @@ $ heroku create
 $ git push heroku master
 
 $ heroku run python manage.py migrate
-$ heroku open```
->>>>>>> cb1560c897f5f17a26310037609e3986d47abb30
+$ heroku open
+
+'''
