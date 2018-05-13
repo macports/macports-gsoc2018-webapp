@@ -1,20 +1,23 @@
 # Database Description
 
-- [Ports](#ports)
-- [Port versions](#port_versions) (I would not create it)
-- [Categories](#categories)
-- [Port - Category](#port_category)
-- [Maintainers](#maintainers)
-- [Port - Maintainer](#port_maintainer)
-- [Builders](#builders)
-- [Build History](#build_history) (The most important table)
-- [Statistics](#statistics)
-- [Port History](#port_history)
-- [OS History](#os_history)
+* [Port index](#port-index)
+  - [Ports](#ports)
+  - ~[Port versions](#port_versions)~
+  - [Categories](#categories)
+  - [Port - Category](#port_category)
+  - [Maintainers](#maintainers)
+  - [Port - Maintainer](#port_maintainer)
+* [Build statistics](#build-statistics)
+  - [Builders](#builders)
+  - [Build History](#build_history) (The most important table)
+* [Installation statistics](#installation-statistics)
+  - [Statistics](#statistics)
+  - [Port History](#port_history)
+  - [OS History](#os_history)
 
-Please go through : https://docs.google.com/spreadsheets/d/1Kgbpl1aHn-10fjXh-f4Wz24-TQw4Coaucidpxp7ZqOQ/edit?usp=sharing
+Please go through [this spreadsheet](https://docs.google.com/spreadsheets/d/1Kgbpl1aHn-10fjXh-f4Wz24-TQw4Coaucidpxp7ZqOQ/edit?usp=sharing) for better visualisations. Then do comment/ suggest changes in this file.
 
-For better visualisations. Then do comment/ suggest changes in this file .
+# Port index
 
 ## ports
 
@@ -150,6 +153,8 @@ portversion_id | integer | unique, references portversion(id) | 3
 **Notes:**
 * I would remove `portversion_id`, as per reasons already explained below the `ports` table.
 
+# Build statistics
+
 ## builders
 
 _This table consist of all the builders information available._
@@ -198,6 +203,8 @@ distributable | text
 |   1   |     1     |     5568    |   677  |       1       |  XX:XX:XX |    ok   |   1.2   |   abc   |  def | abxcss12asfva |               |
 |   2   |     2     |     4554    |   234  |       3       |  XX:XX:XX |    no   |  1.0.4  |   def   |  abc |  asdasda231as |               |
 |   3   |     1     |     5569    |   677  |       2       |  XX:XX:XX |  not ok |  1.0.5  | trigger | fail |     abc345    |               |
+
+# Installation statistics
 
 ## statistics
 
