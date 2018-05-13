@@ -19,17 +19,25 @@ _This table consists of all the current port information._
 
 ### Structure
 
-Column | Type
--------|---------
-**id (key)** | integer
-portname | varchar
-description | text
-long_desc | text
-homepage | varchar
-platform | varchar
-portversionid | varchar
-license | varchar
-portdir | varchar
+Column | Type | Notes | Example
+-------|------|-------|--------
+**id (key)** | integer | primary key | 123
+portname | varchar | unique | python27
+description | text | | An interpreted, object-oriented ...
+long_desc | text | | Python is an interpreted, ... 
+homepage | varchar | | https://www.python.org/
+platform | varchar | | darwin
+portversionid | varchar | |
+license | varchar | | PSF
+portdir | varchar | | lang/python27
+
+**Suggestions:**
+* I would remove `portversionid`
+* While we can keep `platform` for now, I doubt in its usefulness. What we need is either a decent implementation for listing which macOS versions are supported, potentially having a different version for different OS versions (in which case a simple `platform` field won't be enough anyway).
+* I would add a boolean field specifying whether a port is under open maintainership. Maybe just call it `openmaintainer` with values True and False.
+* I would add one or two fields to specify whether a port is active, obsolete or deleted. This is a slightly lower priority. Obsolete ports are always `replaced_by` another port.
+  * If we want to keep track of deleted ports, it would make sense to create another table with deleted ports, listing `port_id`, `commit_shasum` (of the commit which deleted the port). And then have another table with commits, from which we could determine the date of when the port was deleted.
+  * For obsolete (`replaced_by`) ports it would also make sense to have a separate table with `obsolete_port_id`, `replaced_port_id`, `commit_shasum`.
 
 ### Example
 
