@@ -34,7 +34,9 @@ license | varchar | | PSF
 portdir | varchar | | lang/python27
 
 **Suggestions:**
-* I would remove `portversionid`
+* I would remove `portversionid`.
+* And add a `version` field instead.
+* The version is encoded as `@2.7.14_1`, where `2.7.14` is the actual version and `1` is the revision. It would probably be cleaner to add a separate column for `revision` than to keep parsing the version string each time when displaying the information. That's a minor hardly important personal preference though.
 * While we can keep `platform` for now, I doubt in its usefulness. What we need is either a decent implementation for listing which macOS versions are supported, potentially having a different version for different OS versions (in which case a simple `platform` field won't be enough anyway).
 * I would add a boolean field specifying whether a port is under open maintainership. Maybe just call it `openmaintainer` with values True and False.
 * I would add one or two fields to specify whether a port is active, obsolete or deleted. This is a slightly lower priority. Obsolete ports are always `replaced_by` another port.
@@ -72,43 +74,55 @@ category_id | integer | references categories(id) | 7
 
 ## maintainers
 
-_Maintainer and ther id_
+_List of all port maintainers_
 
 ### Structure
 
-Column | Type
--------|---------
-**maintainid (key)** | integer
-maintainers | text
+Column | Type | Notes | Example
+-------|------|-------|--------
+**id (key)** | integer | primary key | 42
+email | varchar | | jmr.nospam@macports.org
+github | varchar | | jmroot
 
-### Example
+The (email, github) pair needs to be unique.
 
-| maintainid(key) | maintainers | 
-|:---------------:|:-----------:|
-|        1        |    mojca    |
-|        2        |    vishnu   |
+**Notes:**
+* I took the liberty to edit this table into what I think would be the "ideal" case. The problem is that our ports might not have the required consistency.
+* The code to handle maintainers will need quite a bit of special handling. First of all, there's a high chance that some handles could be misspelled, lots of emails are lacking the corresponding github handles, many maintainers might not even have a github handle (or might have never told us one), some emails might have been accidentally removed.
+* Maintainers change their emails or github handles. At some point we might want to figure out what to do with those, but let's not overengineer the problem for now.
+* I wanted to add that we do have an additional (private) database with some links between github handles and emails. We could potentially use that information after actually deploying the app.
+* If we want to use the app to also check the consistency of maintainer entries, we would probably need an additional many-to-many table like this one:
+
+Column | Type | Notes
+-------|------|------
+maintainer_id | integer | references maintainer(id)
+description | varchar |
+
+maintainer_id | description | Notes
+--------------|-------------|------
+9 | vishnu |
+9 | vishnu @Vishnum98 |
+9 | @Vishnum98 vishnu | just different order
+9 | @Vishnum98 vishnum | has a typo
+9 | gmail.com:vishnum1998 @Vishnum98 | contains the old email address
+
+But let's wait with this complication and just have a single simple table for now.
 
 ## port_maintainer
 
-* _Sets up the relation between maintainerid & portid  portversionid._
+* _Sets up the relation between maintainerid & portid portversionid._
 * _Basically tells us which maintainer is handling which all ports._
 
 ### Structure
 
 Column | Type
 -------|---------
-**maintainer_id** | integer
-portid | integer
-portversionid | integer
+maintainer_id | integer | references maintainer(id) | 42
+port_id | integer | references port(id) | 123
+portversion_id | integer | unique, references portversion(id) | 3
 
-
-### Example
-
-| maintainer_id (not unique) | portid (not unique) | portversionid |
-|:-----------------------:|:-------------------:|:-------------:|
-|            1            |         234         |       3       |
-|            1            |         677         |       2       |
-|            2            |         677         |       1       |
+**Notes:**
+* I would remove `portversion_id`, as per reasons already explained below the `ports` table.
 
 ## builders
 
