@@ -1,6 +1,7 @@
 # Database Description
 
 - [Ports](#ports)
+- [Port versions](#port_versions) (I would not create it)
 - [Categories](#categories)
 - [Port - Category](#port_category)
 - [Maintainers](#maintainers)
@@ -29,14 +30,14 @@ description | text | | An interpreted, object-oriented ...
 long_desc | text | | Python is an interpreted, ... 
 homepage | varchar | | https://www.python.org/
 platform | varchar | | darwin
-portversionid | varchar | |
+portversion_id | integer | references port_versions(id) |
 license | varchar | | PSF
 portdir | varchar | | lang/python27
 
 **Suggestions:**
-* I would remove `portversionid`.
+* I would remove `portversion_id`.
 * And add a `version` field instead.
-* The version is encoded as `@2.7.14_1`, where `2.7.14` is the actual version and `1` is the revision. It would probably be cleaner to add a separate column for `revision` than to keep parsing the version string each time when displaying the information. That's a minor hardly important personal preference though.
+* The version is encoded as `@2.7.14_1`, where `2.7.14` is the actual version and `1` is the revision. It would probably be cleaner to add a separate column for `revision` than to keep parsing the version string each time when displaying the information. That's a minor hardly important personal preference though, but it might help with various database queries (often we are not really interested in revision).
 * While we can keep `platform` for now, I doubt in its usefulness. What we need is either a decent implementation for listing which macOS versions are supported, potentially having a different version for different OS versions (in which case a simple `platform` field won't be enough anyway).
 * I would add a boolean field specifying whether a port is under open maintainership. Maybe just call it `openmaintainer` with values True and False.
 * I would add one or two fields to specify whether a port is active, obsolete or deleted. This is a slightly lower priority. Obsolete ports are always `replaced_by` another port.
@@ -49,6 +50,31 @@ portdir | varchar | | lang/python27
 |-------------|:--------:|-----------------------------------------------------:|-------------------------------------------------------------------------------------------------------------------------------------------|--------------|----------|---------------|---------|---------------|
 | 123         | python27 | An interpreted, object-oriented programming language | Python is an interpreted, interactive, object-oriented programming language.                                                              | python.org   | darwin   | 1             | GPL-2+  | lang/python27 |
 | 234         |  AppHack |             Program for hacking application bundles. | AppHack is a developer and theming tool to alter, replace or extract the property lists or icons of Mac OS X application bundle packages. |  apphack.com | macosx   | 10            | GPL-2+  | aqua/AppHack  |
+
+## port_versions
+
+_This table maps the ports with multiple different version._
+
+**Suggestions:**
+* I would remove this table, as explained in #2.
+* How exactly does builder fit into this picture?
+
+### Structure
+
+Column | Type | Notes
+-------|------|------
+**id (key)** | integer | primary key
+builder | integer |
+version | varchar |
+variants | varchar |
+
+### Example
+
+| portversionid(key) | portid  | version | variants |
+|:------------------:|:-------:|:-------:|:--------:|
+|          1         |   677   |  2.7.0  |          |
+|          2         |   677   |  2.7.1  |          |
+|          3         |   234   |  1.5.0  |          |
 
 ## categories
 
@@ -143,27 +169,6 @@ architecture | text
 |:---------------:|:------------------------------:|:---------:|:------------:|
 |        1        | ports-10.6_i386_legacy-builder | OS X 10.6 |  i386 x86_64 |
 |        2        |    ports-10.8_x86_64-builder   | OS X 10.8 |    x86_64    |
-
-## port_versions
-
-_This table maps the ports with multiple different version._
-
-### Structure
-
-Column | Type
--------|---------
-**portversionid (key)** | integer
-builder | integer
-version | text
-variants | text
-
-### Example
-
-| portversionid(key) | portid  | version | variants |
-|:------------------:|:-------:|:-------:|:--------:|
-|          1         |   677   |  2.7.0  |          |
-|          2         |   677   |  2.7.1  |          |
-|          3         |   234   |  1.5.0  |          |
 
 ## build_history
 
