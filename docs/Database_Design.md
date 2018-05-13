@@ -3,9 +3,9 @@
 - [Ports](#ports)
 - [Categories](#categories)
 - [Port - Category](#port_category)
-- [Builders](#builders)
 - [Maintainers](#maintainers)
-- [Maintainer - Port](#maintainer_portid)
+- [Port - Maintainer](#port_maintainer)
+- [Builders](#builders)
 - [Build History](#build_history) (The most important table)
 - [Statistics](#statistics)
 - [Port History](#port_history)
@@ -70,6 +70,46 @@ Column | Type | Notes | Example
 port_id | integer | references ports(id) | 123
 category_id | integer | references categories(id) | 7
 
+## maintainers
+
+_Maintainer and ther id_
+
+### Structure
+
+Column | Type
+-------|---------
+**maintainid (key)** | integer
+maintainers | text
+
+### Example
+
+| maintainid(key) | maintainers | 
+|:---------------:|:-----------:|
+|        1        |    mojca    |
+|        2        |    vishnu   |
+
+## port_maintainer
+
+* _Sets up the relation between maintainerid & portid  portversionid._
+* _Basically tells us which maintainer is handling which all ports._
+
+### Structure
+
+Column | Type
+-------|---------
+**maintainer_id** | integer
+portid | integer
+portversionid | integer
+
+
+### Example
+
+| maintainer_id (not unique) | portid (not unique) | portversionid |
+|:-----------------------:|:-------------------:|:-------------:|
+|            1            |         234         |       3       |
+|            1            |         677         |       2       |
+|            2            |         677         |       1       |
+
 ## builders
 
 _This table consist of all the builders information available._
@@ -110,47 +150,6 @@ variants | text
 |          1         |   677   |  2.7.0  |          |
 |          2         |   677   |  2.7.1  |          |
 |          3         |   234   |  1.5.0  |          |
-
-## maintainers
-
-_Maintainer and ther id_
-
-### Structure
-
-Column | Type
--------|---------
-**maintainid (key)** | integer
-maintainers | text
-
-
-### Example
-
-| maintainid(key) | maintainers | 
-|:---------------:|:-----------:|
-|        1        |    mojca    |
-|        2        |    vishnu   |
-
-## maintainer_port
-
-* _Sets up the relation between maintainerid & portid  portversionid._
-* _Basically tells us which maintainer is handling which all ports._
-
-### Structure
-
-Column | Type
--------|---------
-**maintainer_id** | integer
-portid | integer
-portversionid | integer
-
-
-### Example
-
-| maintainer_id (not unique) | portid (not unique) | portversionid |
-|:-----------------------:|:-------------------:|:-------------:|
-|            1            |         234         |       3       |
-|            1            |         677         |       2       |
-|            2            |         677         |       1       |
 
 ## build_history
 
