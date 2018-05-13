@@ -1,6 +1,8 @@
 # Database Description
 
 - [Ports](#ports)
+- [Categories](#categories)
+- [Port - Category](#port_category)
 - [Builders](#builders)
 - [Maintainers](#maintainers)
 - [Maintainer - Port](#maintainer_portid)
@@ -45,6 +47,28 @@ portdir | varchar | | lang/python27
 |-------------|:--------:|-----------------------------------------------------:|-------------------------------------------------------------------------------------------------------------------------------------------|--------------|----------|---------------|---------|---------------|
 | 123         | python27 | An interpreted, object-oriented programming language | Python is an interpreted, interactive, object-oriented programming language.                                                              | python.org   | darwin   | 1             | GPL-2+  | lang/python27 |
 | 234         |  AppHack |             Program for hacking application bundles. | AppHack is a developer and theming tool to alter, replace or extract the property lists or icons of Mac OS X application bundle packages. |  apphack.com | macosx   | 10            | GPL-2+  | aqua/AppHack  |
+
+## categories
+
+_This table lists all existing categories._
+
+### Structure
+
+Column | Type | Notes | Example
+-------|------|-------|--------
+**id (key)** | integer | primary key | 7
+name | varchar | unique | lang
+
+## port_category
+
+_Which ports belong to which categories._
+
+### Structure
+
+Column | Type | Notes | Example
+-------|------|-------|--------
+port_id | integer | references ports(id) | 123
+category_id | integer | references categories(id) | 7
 
 ## builders
 
