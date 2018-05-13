@@ -157,23 +157,31 @@ portversion_id | integer | unique, references portversion(id) | 3
 
 ## builders
 
-_This table consist of all the builders information available._
+_This table consist of list of all the port builders on our [build infrastructure](https://build.macports.org/builders)._
 
 ### Structure
 
-Column | Type
--------|---------
-**builderid (key)** | integer
-builder | varchar
-osname | text
-architecture | text
+Column | Type | Notes
+-------|------|------
+**id (key)** | integer | primary key
+name | varchar | unique
+os_version | varchar |
+os_name | varchar |
+arch | varchar |
+stdlib | varchar |
 
 ### Example
 
-| builderid (key) |            builder             |   osname  | architecture |
-|:---------------:|:------------------------------:|:---------:|:------------:|
-|        1        | ports-10.6_i386_legacy-builder | OS X 10.6 |  i386 x86_64 |
-|        2        |    ports-10.8_x86_64-builder   | OS X 10.8 |    x86_64    |
+| id (key) | name | os_version | os_name | arch | stdlib
+|----------|------|------------|---------|------|-------
+| 1 | ports-10.5_ppc_legacy | 10.5 | Mac OS X 10.5 | ppc | stdlibc++
+| 2 | ports-10.6_i386_legacy | 10.6 | Mac OS X 10.6 | i386 | stdlibc++
+| 3 | ports-10.6_x86_64_legacy | 10.6 | Mac OS X 10.6 | x86_64 | stdlibc++
+| 4 | ports-10.6_i386 | 10.6 | Mac OS X 10.6 | i386 | libc++
+| 5 | ports-10.6_x86_64 | 10.6 | Mac OS X 10.6 | x86_64 | libc++
+| 6 | ports-10.7_x86_64_legacy | 10.7 | OS X 10.7 | x86_64 | stdlibc++
+| | ... | | | |
+|   | ports-10.13_x86_64 | 10.13 | macOS 10.13 | x86_64 | libc++
 
 ## build_history
 
