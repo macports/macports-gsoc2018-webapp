@@ -1,8 +1,10 @@
 # Database Description
 
 * [Port index](#port-index)
+  - [Commits](#commits)
   - [Ports](#ports)
-  - ~[Port versions](#port_versions)~
+  - [Obsolete ports](#obsolete_ports)
+  - [Deleted ports](#deleted_ports)
   - [Categories](#categories)
   - [Port - Category](#port_category)
   - [Maintainers](#maintainers)
@@ -15,80 +17,63 @@
   - [Port History](#port_history)
   - [OS History](#os_history)
 
-Please go through [this spreadsheet](https://docs.google.com/spreadsheets/d/1Kgbpl1aHn-10fjXh-f4Wz24-TQw4Coaucidpxp7ZqOQ/edit?usp=sharing) for better visualisations. Then do comment/ suggest changes in this file.
-
 # Port index
+
+## commits
+
+Column | Type | Notes | Example
+-------|------|-------|--------
+**id (key)** | integer | primary key | 1
+sha | varchar | unique, index | 3a1b845e6f4fa4a78dae5c1b58f4dc46f397b916
+author_timestamp | datetime, index
+commit_timestamp | datetime, index
+
+* Maybe there's a way to order commits in some way
 
 ## ports
 
 _This table consists of all the current port information._
 
-### Structure
-
 Column | Type | Notes | Example
 -------|------|-------|--------
 **id (key)** | integer | primary key | 123
-portname | varchar | unique | python27
+portname | varchar | unique, index | python27
+version | varchar | | 2.7.15
+revision | integer | | 0
 description | text | | An interpreted, object-oriented ...
 long_desc | text | | Python is an interpreted, ... 
 homepage | varchar | | https://www.python.org/
-platform | varchar | | darwin
-portversion_id | integer | references port_versions(id) |
 license | varchar | | PSF
+openmaintainer | boolean | | true
+active | boolean | | true
 portdir | varchar | | lang/python27
 
-**Suggestions:**
-* I would remove `portversion_id`.
-* And add a `version` field instead.
-* The version is encoded as `@2.7.14_1`, where `2.7.14` is the actual version and `1` is the revision. It would probably be cleaner to add a separate column for `revision` than to keep parsing the version string each time when displaying the information. That's a minor hardly important personal preference though, but it might help with various database queries (often we are not really interested in revision).
-* While we can keep `platform` for now, I doubt in its usefulness. What we need is either a decent implementation for listing which macOS versions are supported, potentially having a different version for different OS versions (in which case a simple `platform` field won't be enough anyway).
-* I would add a boolean field specifying whether a port is under open maintainership. Maybe just call it `openmaintainer` with values True and False.
-* I would add one or two fields to specify whether a port is active, obsolete or deleted. This is a slightly lower priority. Obsolete ports are always `replaced_by` another port.
-  * If we want to keep track of deleted ports, it would make sense to create another table with deleted ports, listing `port_id`, `commit_shasum` (of the commit which deleted the port). And then have another table with commits, from which we could determine the date of when the port was deleted.
-  * For obsolete (`replaced_by`) ports it would also make sense to have a separate table with `obsolete_port_id`, `replaced_port_id`, `commit_shasum`.
+* `openmaintainer` specifies whether the port is under an openmaintainer policy
+* `active` is true for ports which are neither deleted nor obsolete (make sure not to end up in inconsistent database state)
 
-### Example
-
-| portid(key) | portname |                                          description | long_desc                                                                                                                                 | homepage     | platform | portversionid | license | portdir       |
-|-------------|:--------:|-----------------------------------------------------:|-------------------------------------------------------------------------------------------------------------------------------------------|--------------|----------|---------------|---------|---------------|
-| 123         | python27 | An interpreted, object-oriented programming language | Python is an interpreted, interactive, object-oriented programming language.                                                              | python.org   | darwin   | 1             | GPL-2+  | lang/python27 |
-| 234         |  AppHack |             Program for hacking application bundles. | AppHack is a developer and theming tool to alter, replace or extract the property lists or icons of Mac OS X application bundle packages. |  apphack.com | macosx   | 10            | GPL-2+  | aqua/AppHack  |
-
-## port_versions
-
-_This table maps the ports with multiple different version._
-
-**Suggestions:**
-* I would remove this table, as explained in #2.
-* How exactly does builder fit into this picture?
-
-### Structure
+## obsolete_ports
 
 Column | Type | Notes
 -------|------|------
-**id (key)** | integer | primary key
-builder | integer |
-version | varchar |
-variants | varchar |
+port_id | integer | references ports(id), unique, index
+replaced_by | integer | references ports(id)
+commit_id | integer | references commit(id)
 
-### Example
+## deleted_ports
 
-| portversionid(key) | portid  | version | variants |
-|:------------------:|:-------:|:-------:|:--------:|
-|          1         |   677   |  2.7.0  |          |
-|          2         |   677   |  2.7.1  |          |
-|          3         |   234   |  1.5.0  |          |
+Column | Type | Notes
+-------|------|------
+port_id | integer | references ports(id), unique, index
+commit_id | integer | references commit(id)
 
 ## categories
 
 _This table lists all existing categories._
 
-### Structure
-
 Column | Type | Notes | Example
 -------|------|-------|--------
 **id (key)** | integer | primary key | 7
-name | varchar | unique | lang
+name | varchar | unique, index | lang
 
 ## port_category
 
@@ -110,10 +95,10 @@ _List of all port maintainers_
 Column | Type | Notes | Example
 -------|------|-------|--------
 **id (key)** | integer | primary key | 42
-email | varchar | | jmr.nospam@macports.org
-github | varchar | | jmroot
+email | varchar | unique, index | jmr.nospam@macports.org
+github | varchar | unique, index | jmroot
 
-The (email, github) pair needs to be unique.
+* The (email, github) pair also needs to be unique.
 
 **Notes:**
 * I took the liberty to edit this table into what I think would be the "ideal" case. The problem is that our ports might not have the required consistency.
@@ -139,19 +124,13 @@ But let's wait with this complication and just have a single simple table for no
 
 ## port_maintainer
 
-* _Sets up the relation between maintainerid & portid portversionid._
+* _Sets up the relation between maintainer id & port id._
 * _Basically tells us which maintainer is handling which all ports._
-
-### Structure
 
 Column | Type
 -------|---------
-maintainer_id | integer | references maintainer(id) | 42
-port_id | integer | references port(id) | 123
-portversion_id | integer | unique, references portversion(id) | 3
-
-**Notes:**
-* I would remove `portversion_id`, as per reasons already explained below the `ports` table.
+maintainer_id | integer | references maintainer(id), index | 42
+port_id | integer | references port(id), index | 123
 
 # Build statistics
 
@@ -159,16 +138,14 @@ portversion_id | integer | unique, references portversion(id) | 3
 
 _This table consist of list of all the port builders on our [build infrastructure](https://build.macports.org/builders)._
 
-### Structure
-
 Column | Type | Notes
 -------|------|------
 **id (key)** | integer | primary key
-name | varchar | unique
-os_version | varchar |
-os_name | varchar |
-arch | varchar |
-stdlib | varchar |
+name | varchar | unique, index
+os_version | varchar | index
+os_name | varchar | index
+arch | varchar | index
+stdlib | varchar | index
 
 ### Example
 
@@ -187,22 +164,21 @@ stdlib | varchar |
 
 _Enitre build history would be saved here._
 
-### Structure
-
-Column | Type
--------|---------
-**sr_no (key)** | integer
-builderid | integer
-buildnumber | integer
-portid | integer
-portversionid | integer
-timestamp | time
-success | varchar
+Column | Type | Notes
+-------|------|------
+**id (key)** | integer | primary key
+builder_id | integer | references builder(id)
+build_number | integer | index
+port_id | integer | references ports(id), index
+timestamp | datetime |
+success | varchar |
 version | varchar
 reason | text
 info | text
-commitid | varchar
+commit_id | integer | references commits(id)
 distributable | text
+
+* (builder_id, build_number) pair must be unique
 
 ### Example
 
@@ -219,8 +195,6 @@ distributable | text
 _All the results from 'mpstats' would be parsed and these 2 tables would be populated_
 
 ## port_history
-
-
 
 ### Structure
 
